@@ -5,7 +5,7 @@ const ATMDeposit = ({ onChange, isDeposit }) => {
       <label className="label huge">
         <h3> {choice[Number(!isDeposit)]}</h3>
         <input type="number" width="200" onChange={onChange}></input>
-        <input type="submit" width="200" value="Submit"></input>
+        <input type="submit" id="submit" width="200" value="Submit"></input>
       </label>
     );
   };
@@ -18,11 +18,7 @@ const ATMDeposit = ({ onChange, isDeposit }) => {
     let status = `Account Balance $ ${totalState} `;
     console.log(`Account Rendered with isDeposit: ${isDeposit}`);
     const handleChange = event => {
-        if ((deposit == 0) || deposit < 0) {
-            alert("This transaction cannot be processed");
-            
-            return;
-        }
+       
       console.log(`handleChange ${event.target.value}`);
       deposit = Number(event.target.value);
      
@@ -31,14 +27,18 @@ const ATMDeposit = ({ onChange, isDeposit }) => {
     const handleSubmit = () => {
         
       let newTotal = isDeposit ? totalState + deposit : totalState - deposit;
+      
+      if (isDeposit === false && newTotal <1) {
+        alert("YOU HAVE INSUFFICIENT FUNDS!")
+        submitButton = document.getElementById("submit");
+        submitButton.disabled = true;
+      }
+      
       setTotalState(newTotal);
       event.preventDefault();
 
-      if ((totalState <= 0) && (isDeposit == false)) {
-        alert("This transaction cannot be processed");
-       
-        return "This transaction cannot be processed";
-    }
+      
+    
     };
   
     return (
